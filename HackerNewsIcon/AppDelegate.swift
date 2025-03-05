@@ -133,9 +133,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func notifyNewPost() {
-        let selectedSound = UserDefaults.standard.string(forKey: "HNNotificationSound") ?? "All Your Base (MP3)"
+        let selectedSound = UserDefaults.standard.string(forKey: "HNNotificationSound") ?? "Ping"
 
-        if selectedSound == "All Your Base (MP3)" {
+        if selectedSound == "No Sound" {
+            print("Notifications are muted.")
+        } else if selectedSound == "All Your Base (MP3)" {
             // Play custom MP3 sound
             if let soundURL = Bundle.main.url(forResource: "all-your-base", withExtension: "mp3") {
                 do {
@@ -184,7 +186,7 @@ class PreferencesWindowController: NSWindowController, NSTextFieldDelegate {
     var thresholdTextField: NSTextField!
     var soundDropdown: NSPopUpButton!
     
-    let availableSounds = ["All Your Base", "Ping", "Submarine", "Sosumi", "Morse"]
+    let availableSounds = ["No Sound", "Ping", "Submarine", "Sosumi", "Morse", "All Your Base (MP3)"]
 
     init() {
         let window = NSWindow(
@@ -193,7 +195,8 @@ class PreferencesWindowController: NSWindowController, NSTextFieldDelegate {
             backing: .buffered,
             defer: false
         )
-        window.title = "Preferences"
+        window.title = "HN Icon Preferences"
+        window.level = .floating 
         window.center()
         super.init(window: window)
         setupUI()
@@ -225,16 +228,16 @@ class PreferencesWindowController: NSWindowController, NSTextFieldDelegate {
 
         soundDropdown = NSPopUpButton(frame: NSRect(x: 20, y: 50, width: 200, height: 24), pullsDown: false)
         soundDropdown.addItems(withTitles: availableSounds)
-        
-        // Default to the saved sound
-        let savedSound = UserDefaults.standard.string(forKey: "HNNotificationSound") ?? "All Your Base (MP3)"
+
+        // Default to saved sound, or "Ping" if nothing is saved
+        let savedSound = UserDefaults.standard.string(forKey: "HNNotificationSound") ?? "Ping"
         if availableSounds.contains(savedSound) {
             soundDropdown.selectItem(withTitle: savedSound)
         }
         
         contentView.addSubview(soundDropdown)
 
-        // Save Button (Moved Below)
+        // Save Button (Below Dropdown)
         let saveButton = NSButton(title: "Save", target: self, action: #selector(savePreferences))
         saveButton.frame = NSRect(x: 100, y: 10, width: 100, height: 30)
         contentView.addSubview(saveButton)
@@ -254,7 +257,6 @@ class PreferencesWindowController: NSWindowController, NSTextFieldDelegate {
         window?.close()
     }
 }
-
 
 // Hacker News Post Model
 struct HNPost: Codable {
