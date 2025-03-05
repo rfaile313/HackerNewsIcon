@@ -1,4 +1,5 @@
 import Cocoa
+import AVFoundation
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     var statusItem: NSStatusItem?
@@ -6,6 +7,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var topPosts: [(title: String, url: String, score: Int)] = [] // Store last 5 posts
     let hackerNewsAPI = "https://hacker-news.firebaseio.com/v0/topstories.json"
     var preferencesWindow: PreferencesWindowController?
+    var audioPlayer: AVAudioPlayer?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         NSApp.setActivationPolicy(.accessory) // Prevents Dock icon
@@ -19,7 +21,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         if let button = statusItem?.button {
             button.image = NSImage(systemSymbolName: "newspaper.fill", accessibilityDescription: "Hacker News")
-            button.image?.isTemplate = true // Ensure visibility in dark mode
+            button.image?.isTemplate = true // Tries to ensure visibility in dark mode
             button.action = #selector(refreshMenu)
             button.target = self
         }
@@ -131,8 +133,24 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func notifyNewPost() {
-        // Play a sound
-        NSSound(named: "Ping")?.play()
+        let selectedSound = UserDefaults.standard.string(forKey: "HNNotificationSound") ?? "All Your Base (MP3)"
+
+        if selectedSound == "All Your Base (MP3)" {
+            // Play custom MP3 sound
+            if let soundURL = Bundle.main.url(forResource: "all-your-base", withExtension: "mp3") {
+                do {
+                    audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
+                    audioPlayer?.play()
+                } catch {
+                    print("Failed to play custom MP3: \(error)")
+                }
+            } else {
+                print("Custom MP3 file not found!")
+            }
+        } else {
+            // Play system sound
+            NSSound(named: selectedSound)?.play()
+        }
 
         // Flash the icon
         DispatchQueue.main.async {
@@ -147,6 +165,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
     }
+
 
     @objc func openPreferences() {
         if preferencesWindow == nil {
@@ -163,16 +182,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 // Preferences Window
 class PreferencesWindowController: NSWindowController, NSTextFieldDelegate {
     var thresholdTextField: NSTextField!
+    var soundDropdown: NSPopUpButton!
+    
+    let availableSounds = ["All Your Base", "Ping", "Submarine", "Sosumi", "Morse"]
 
     init() {
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 300, height: 150),
+            contentRect: NSRect(x: 0, y: 0, width: 300, height: 200),
             styleMask: [.titled, .closable],
             backing: .buffered,
             defer: false
         )
-        window.title = "HNIcon Preferences"
-        window.center() // ✅ Center the window on the screen
+        window.title = "Preferences"
+        window.center()
         super.init(window: window)
         setupUI()
     }
@@ -185,27 +207,54 @@ class PreferencesWindowController: NSWindowController, NSTextFieldDelegate {
         let contentView = NSView(frame: window.contentView!.frame)
         window.contentView = contentView
 
+        // Label for threshold
         let label = NSTextField(labelWithString: "Min Score Threshold:")
-        label.frame = NSRect(x: 20, y: 80, width: 200, height: 20)
+        label.frame = NSRect(x: 20, y: 140, width: 200, height: 20)
         contentView.addSubview(label)
 
-        thresholdTextField = NSTextField(frame: NSRect(x: 20, y: 50, width: 100, height: 24))
+        // Text field for score threshold
+        thresholdTextField = NSTextField(frame: NSRect(x: 20, y: 110, width: 100, height: 24))
         thresholdTextField.stringValue = "\(UserDefaults.standard.integer(forKey: "HNScoreThreshold"))"
         thresholdTextField.delegate = self
         contentView.addSubview(thresholdTextField)
 
-        let saveButton = NSButton(title: "Save", target: self, action: #selector(saveThreshold))
-        saveButton.frame = NSRect(x: 150, y: 50, width: 80, height: 24)
+        // Dropdown for sound selection
+        let soundLabel = NSTextField(labelWithString: "Notification Sound:")
+        soundLabel.frame = NSRect(x: 20, y: 80, width: 200, height: 20)
+        contentView.addSubview(soundLabel)
+
+        soundDropdown = NSPopUpButton(frame: NSRect(x: 20, y: 50, width: 200, height: 24), pullsDown: false)
+        soundDropdown.addItems(withTitles: availableSounds)
+        
+        // Default to the saved sound
+        let savedSound = UserDefaults.standard.string(forKey: "HNNotificationSound") ?? "All Your Base (MP3)"
+        if availableSounds.contains(savedSound) {
+            soundDropdown.selectItem(withTitle: savedSound)
+        }
+        
+        contentView.addSubview(soundDropdown)
+
+        // Save Button (Moved Below)
+        let saveButton = NSButton(title: "Save", target: self, action: #selector(savePreferences))
+        saveButton.frame = NSRect(x: 100, y: 10, width: 100, height: 30)
         contentView.addSubview(saveButton)
     }
 
-    @objc func saveThreshold() {
+    @objc func savePreferences() {
+        // Save Score Threshold
         if let value = Int(thresholdTextField.stringValue) {
             UserDefaults.standard.set(value, forKey: "HNScoreThreshold")
         }
+
+        // Save Selected Sound
+        if let selectedSound = soundDropdown.selectedItem?.title {
+            UserDefaults.standard.set(selectedSound, forKey: "HNNotificationSound")
+        }
+
         window?.close()
     }
 }
+
 
 // Hacker News Post Model
 struct HNPost: Codable {
