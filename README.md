@@ -58,4 +58,6 @@ Displays trending articles and **notifies you when a new post reaches your set s
 git clone https://github.com/rfaile313/HackerNewsIcon.git
 cd HackerNewsIcon
 open HackerNewsIcon.xcodeproj
+```
 
+Feel free to let me know if you see anything weird in this readme, app, or code. A lot of it was generated with AI [as an experiment](https://rudyfaile.com/2025/03/09/claude-kind-of-sucks/). 
