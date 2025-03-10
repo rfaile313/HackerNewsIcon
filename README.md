@@ -55,7 +55,7 @@ Displays trending articles and **notifies you when a new post reaches your set s
 
 ### **🔹 Clone & Run**
 ```sh
-git clone https://github.com/your-username/HackerNewsIcon.git
+git clone https://github.com/rfaile313/HackerNewsIcon.git
 cd HackerNewsIcon
 open HackerNewsIcon.xcodeproj
 
