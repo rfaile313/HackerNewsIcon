@@ -21,7 +21,7 @@ Displays trending articles and **notifies you when a new post reaches your set s
 ---
 
 ## 🔧 Installation
-1. **Download the `.app` file** from [Releases](https://github.com/your-username/HackerNewsIcon/releases).  
+1. **Download the `.app` file** from [Releases](https://github.com/rfaile313/HackerNewsIcon/releases/).  
 2. **Move the app** to `/Applications`.  
 3. **Run it** and allow permissions if prompted.  
 
