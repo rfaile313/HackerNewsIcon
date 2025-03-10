@@ -6,11 +6,12 @@ Displays trending articles and **notifies you when a new post reaches your set s
 ---
 
 ## 📌 Features
-✅ **Live Hacker News Updates** – Fetches the latest trending posts every minute.  
-✅ **Customizable Score Threshold** – Set the minimum points required for notifications. (Default is 250).
-✅ **Custom Notifications** – Choose between system sounds or a custom hacker mp3. The notification icon also flashes momentarily when it gets a new post that meets your threshold.
-✅ **Quick Access** – Open Hacker News articles directly from the menu bar.  
-✅ **Minimalist & Lightweight** – Runs in the background.  
+- **Live Hacker News Updates** – Fetches the latest trending posts every minute.  
+- **Customizable Score Threshold** – Set the minimum points required for notifications. (Default is 250).
+- **Custom Sounds** – Choose between system sounds or a custom hacker mp3. 
+- **Visual Notification** = The notification icon also flashes momentarily when it gets a new post that meets your threshold.
+- **Quick Access** – Open Hacker News articles directly from the menu bar.  
+- **Minimalist & Lightweight** – Runs in the background.  
 
 ---
 
