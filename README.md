@@ -28,7 +28,7 @@ Displays trending articles and **notifies you when a new post reaches your set s
 
 ---
 
-## ⚙Preferences
+## Preferences
 - **Set the Minimum Score Threshold** *(e.g., Only notify if a post has 500+ points)* 
 - **Choose a Notification Sound**
   - Ping (Default)
