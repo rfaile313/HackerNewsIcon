@@ -1,11 +1,11 @@
-# HackerNewsIcon 🚀
+# HackerNewsIcon
 
 A **macOS menu bar app** that monitors **Hacker News** for top posts.  
 Displays trending articles and **notifies you when a new post reaches your set score threshold**.
 
 ---
 
-## 📌 Features
+## Features
 - **Live Hacker News Updates** – Fetches the latest trending posts every minute.  
 - **Customizable Score Threshold** – Set the minimum points required for notifications. (Default is 250).
 - **Custom Sounds** – Choose between system sounds or a custom hacker mp3. 
@@ -15,20 +15,20 @@ Displays trending articles and **notifies you when a new post reaches your set s
 
 ---
 
-## 📷 Screenshot
+## Screenshot
 <img width="364" alt="screen" src="https://github.com/user-attachments/assets/5d1808bb-b29c-4724-aa2f-987768127d3a" />
 
 
 ---
 
-## 🔧 Installation
+## Installation
 1. **Download the `.app` file** from [Releases](https://github.com/rfaile313/HackerNewsIcon/releases/).  
 2. **Move the app** to `/Applications`.  
 3. **Run it** and allow permissions if prompted.  
 
 ---
 
-## ⚙️ Preferences
+## ⚙Preferences
 - **Set the Minimum Score Threshold** *(e.g., Only notify if a post has 500+ points)* 
 - **Choose a Notification Sound**
   - Ping (Default)
@@ -39,21 +39,21 @@ Displays trending articles and **notifies you when a new post reaches your set s
 
 ---
 
-## 🚀 How to Use
+## How to Use
 1. **Click the menu bar icon** → View trending Hacker News posts.
 2. **Click a post** → Opens the Hacker News discussion.
 3. **Preferences** → Customize notifications and sound settings.
 
 ---
 
-## 🛠️ Building from Source
-### **🔹 Prerequisites**
+## Building from Source
+### **Prerequisites**
 - **macOS 12+**
 - **Xcode 14+**
 - **Swift 5**
 - **AVFoundation (for sound playback)**
 
-### **🔹 Clone & Run**
+### **Clone & Run**
 ```sh
 git clone https://github.com/rfaile313/HackerNewsIcon.git
 cd HackerNewsIcon
